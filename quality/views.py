@@ -1,9 +1,14 @@
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from .models import ConcentrateQuality
 from django.shortcuts import render, redirect
 import json
 from django.db.models import Avg, Min, Max
 
 
+
+@login_required
 def add_concentrate(request):
     user = request.user
 
@@ -68,3 +73,14 @@ def report(request):
 
     return render(request, 'report.html')
 
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('add_concentrate')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
