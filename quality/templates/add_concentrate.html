@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Concentrate Quality</title>
+    <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+    <script src="https://jsuites.net/v4/jsuites.js"></script>
+    <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+    <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+</head>
+<body>
+    <p>Текущий пользователь: {{ user.username }}</p>
+    <h1>Добавление качества концентрата</h1>
+
+    <div id="custom"></div>
+
+<form id="data-form" method="POST">
+    {% csrf_token %}
+    <input type="hidden" id="data-json" name="data-json" value="" />
+    <button type="button" id="save-button">Сохранить</button>
+</form>
+
+    <script>
+        var data = [
+            ['материал 1', '', '', '', '', '', ''],
+            ['материал 2', '', '', '', '', '', ''],
+            ['материал 3', '', '', '', '', '', ''],
+            ['материал 4', '', '', '', '', '', ''],
+            ['материал 5', '', '', '', '', '', ''],
+            ['материал 6', '', '', '', '', '', ''],
+            ['материал 7', '', '', '', '', '', ''],
+            ['материал 8', '', '', '', '', '', ''],
+            ['материал 9', '', '', '', '', '', ''],
+            ['материал 10', '', '', '', '', '', ''],
+        ];
+
+        var myTable = jspreadsheet(document.getElementById('custom'), {
+            data: data,
+            columns: [
+                { type: 'text', title: 'Наименование сырья', width: 200 },
+                { type: 'dropdown', title: 'Месяц', width: 100, source: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] },
+                { type: 'text', title: 'сод-ие железа', width: 200 },
+                { type: 'text', title: 'сод-ие кремния', width: 200 },
+                { type: 'text', title: 'сод-ие алюминия', width: 200 },
+                { type: 'text', title: 'сод-ие серы', width: 200 },
+                { type: 'text', title: 'сод-ие кальция', width: 200 },
+            ]
+        });
+
+        document.getElementById('save-button').addEventListener('click', function () {
+
+            var tableData = myTable.getData();
+
+            var jsonData = JSON.stringify(tableData);
+
+            document.getElementById('data-json').value = jsonData;
+
+            document.getElementById('data-form').submit();
+        });
+    </script>
+</body>
+</html>
