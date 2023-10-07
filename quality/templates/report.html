@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report</title>
+</head>
+<body>
+    <a href="{% url 'add_concentrate' %}" style="float: right">Добавление качества концентрата</a>
+    <h1>Отчет по концентрации</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="selected_month">Месяц:</label>
+        <select name="selected_month" id="selected_month">
+            <option value="January">Январь</option>
+            <option value="February">Февраль</option>
+            <option value="March">Март</option>
+            <option value="April">Апрель</option>
+            <option value="May">Май</option>
+            <option value="June">Июнь</option>
+            <option value="July">Июль</option>
+            <option value="August">Август</option>
+            <option value="September">Сентябрь</option>
+            <option value="October">Октябрь</option>
+            <option value="November">Ноябрь</option>
+            <option value="December">Декабрь</option>
+        </select>
+        <button type="submit">Сформировать отчет</button>
+    </form>
+
+    {% if report_data %}
+    <h2>Отчет за выбранный месяц</h2>
+    <ul>
+        <li>Среднее содержание железа: {{ report_data.average_iron }}</li>
+        <li>Среднее содержание кремния: {{ report_data.average_silicon }}</li>
+        <li>Среднее содержание алюминия: {{ report_data.average_aluminum }}</li>
+        <li>Среднее содержание кальция: {{ report_data.average_calcium }}</li>
+        <li>Среднее содержание серы: {{ report_data.average_sulfur }}</li>
+        <li>Минимальное содержание железа: {{ report_data.min_iron }}</li>
+        <li>Минимальное содержание кремния: {{ report_data.min_silicon }}</li>
+        <li>Минимальное содержание алюминия: {{ report_data.min_aluminum }}</li>
+        <li>Минимальное содержание кальция: {{ report_data.min_calcium }}</li>
+        <li>Минимальное содержание серы: {{ report_data.min_sulfur }}</li>
+        <li>Максимальное содержание железа: {{ report_data.max_iron }}</li>
+        <li>Максимальное содержание кремния: {{ report_data.max_silicon }}</li>
+        <li>Максимальное содержание алюминия: {{ report_data.max_aluminum }}</li>
+        <li>Максимальное содержание кальция: {{ report_data.max_calcium }}</li>
+        <li>Максимальное содержание серы: {{ report_data.max_sulfur }}</li>
+    </ul>
+    {% endif %}
+</body>
+</html>

@@ -1,6 +1,7 @@
 from .models import ConcentrateQuality
 from django.shortcuts import render, redirect
 import json
+from django.db.models import Avg, Min, Max
 
 
 def add_concentrate(request):
@@ -39,3 +40,31 @@ def add_concentrate(request):
 
     else:
         return render(request, 'add_concentrate.html', {'user': user})
+
+
+def report(request):
+    if request.method == 'POST':
+        selected_month = request.POST.get('selected_month')
+
+        report_data = ConcentrateQuality.objects.filter(month=selected_month).aggregate(
+            average_iron=Avg('iron'),
+            average_silicon=Avg('silicon'),
+            average_aluminum=Avg('aluminum'),
+            average_calcium=Avg('calcium'),
+            average_sulfur=Avg('sulfur'),
+            min_iron=Min('iron'),
+            min_silicon=Min('silicon'),
+            min_aluminum=Min('aluminum'),
+            min_calcium=Min('calcium'),
+            min_sulfur=Min('sulfur'),
+            max_iron=Max('iron'),
+            max_silicon=Max('silicon'),
+            max_aluminum=Max('aluminum'),
+            max_calcium=Max('calcium'),
+            max_sulfur=Max('sulfur')
+        )
+
+        return render(request, 'report.html', {'report_data': report_data})
+
+    return render(request, 'report.html')
+
