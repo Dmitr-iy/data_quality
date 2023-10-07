@@ -5,7 +5,8 @@ from .models import ConcentrateQuality
 from django.shortcuts import render, redirect
 import json
 from django.db.models import Avg, Min, Max
-
+from rest_framework import viewsets
+from .serializers import ConcentrateQualitySerializer
 
 
 @login_required
@@ -84,3 +85,8 @@ def signup_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+
+class ConcentrateQualityViewSet(viewsets.ModelViewSet):
+    queryset = ConcentrateQuality.objects.all()
+    serializer_class = ConcentrateQualitySerializer
