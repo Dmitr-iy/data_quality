@@ -1,0 +1,44 @@
+version: 'latest'
+services:
+    db:
+      container_name: quality_postg
+      image: postgres
+      env_file:
+        - .env
+      volumes:
+        - ../2. Init Database:/docker-entrypoint-initdb.d
+        - ./postgres_data:/var/lib/postgresql/data
+      ports:
+        - "5432:5432"
+      healthcheck:
+        test: ["NONE", "psql -U admin -d mdb"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 10s
+      restart: unless-stopped
+
+    django:
+      container_name: quality
+      build:
+        context: ./
+        dockerfile: Dockerfile
+      command: bash /doc/prestart.sh
+      volumes:
+        - .:/doc
+      ports:
+        - 8000:8000
+      depends_on:
+        - db
+      env_file:
+        - .env
+
+    nginx:
+      image: nginx
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+        - "8080:80"
+      depends_on:
+        - django
+
