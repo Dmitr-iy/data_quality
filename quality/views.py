@@ -48,7 +48,9 @@ def add_concentrate(request):
         return render(request, 'add_concentrate.html', {'user': user})
 
 
+@login_required
 def report(request):
+    user = request.user
     if request.method == 'POST':
         selected_month = request.POST.get('selected_month')
 
@@ -71,7 +73,7 @@ def report(request):
         )
 
         return render(request, 'report.html', {'report_data': report_data})
-
+    user = request.user
     return render(request, 'report.html')
 
 
